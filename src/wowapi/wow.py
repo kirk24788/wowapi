@@ -13,7 +13,6 @@ from tempfile import mkstemp
 from shutil import move
 from os import remove, close
 from mach_vm import VirtualMemory
-from mmhelper.mmhelper import enum
 from battlenet import BattleNet
 from gdbhack import GdbHack
 
@@ -44,7 +43,8 @@ OFFSETS = {
 VALIDATION_ACCOUNT_ID = None
 
 
-
+def enum(**enums):
+    return type('Enum', (), enums)
 ChatType = enum(SAY=1,GUILD=4,OFFICER=5,YELL=6,WHISPER=7,REPLY=9,CHANNEL=17)
 
 def ChannelName(channelId):

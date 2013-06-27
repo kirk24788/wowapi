@@ -13,7 +13,6 @@ from tempfile import mkstemp
 from shutil import move
 from os import remove, close
 from mach_vm import VirtualMemory
-from mmhelper.mmhelper import enum
 from battlenet import BattleNet
 from gdbhack import GdbHack
 from wow import WorldOfWarcraft
