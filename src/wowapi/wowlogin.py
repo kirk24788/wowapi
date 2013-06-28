@@ -19,6 +19,9 @@ from wow import WorldOfWarcraft
 
 CONFIG_FILE = '~/.wowpw'
 
+KEY_ENTER = 36
+KEY_ESCAPE = 53
+
 if not os.path.isfile(os.path.expanduser(CONFIG_FILE)):
     print '''Config File not found!
 
