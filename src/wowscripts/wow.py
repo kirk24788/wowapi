@@ -36,7 +36,7 @@ def main():
     accId = args.account
     args = parser.parse_args()
 
-    wow = WorldOfWarcraftLogin(args.account, args.char)
+    wow = WorldOfWarcraftLogin(args.account[0], args.char[0])
     wow.login(hidden=args.hidden, loginDelay=0)
     if args.luaUnlock:
         wow.luaUnlock()
