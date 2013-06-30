@@ -67,7 +67,7 @@ class CombatLogParser:
         
 
     def _findOffsets(self, days):
-        uniqueOffsets = sorted(uniq(args.offsets))
+        uniqueOffsets = sorted(uniq(days))
         logDates=[]
         progress, finish = loadingMessage("Finding Offsets")
         binSearch = BinarySearch(self.combatlogFilename)
