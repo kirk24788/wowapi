@@ -22,8 +22,21 @@ setup(
     packages=find_packages('src'),
     version = version,
     install_requires=[
+        "appscript",
         "prettytable",
     ],
+    entry_points={
+        'console_scripts': [
+            'wow = wowscripts.wow:main [scripts]',
+            'professions = wowscripts.professions:main [scripts]',
+            'combatLog = wowscripts.combatLog:main [scripts]',
+            'chatLog = wowscripts.chatLog:main [scripts]',
+            'luaUnlock = wowscripts.luaUnlock:main [scripts]',
+        ]
+    },
+    extras_require = {
+        'scripts':  ["mmhelper"],
+    },
     dependency_links = [
         "http://basement.local/python-eggs/"
     ],
