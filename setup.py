@@ -19,6 +19,13 @@ else:
 setup(
     name = "wowapi",
     package_dir={'': 'src'},
-    packages=['wowapi'],
+    packages=find_packages('src'),
     version = version,
+    install_requires=[
+        "prettytable",
+    ],
+    dependency_links = [
+        "http://basement.local/python-eggs/"
+    ],
 )
+
