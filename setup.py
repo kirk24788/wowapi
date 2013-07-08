@@ -32,6 +32,7 @@ setup(
             'combatLog = wowscripts.combatLog:main [scripts]',
             'chatLog = wowscripts.chatLog:main [scripts]',
             'luaUnlock = wowscripts.luaUnlock:main [scripts]',
+            'battlenet = wowscripts.battlenet:main [scripts]',
         ]
     },
     extras_require = {
