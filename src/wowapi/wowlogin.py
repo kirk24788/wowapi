@@ -59,7 +59,7 @@ class WorldOfWarcraftLogin(WorldOfWarcraft):
             raise Exception( '%d is not active!'%accountId )
         maxCharId = len(CHAR_NAMES[ACCOUNT_NAMES[accountId]])-1
         if charId > maxCharId:
-            raise Exception( 'has to be between 0 and %d for account %d' %(maxId, accId) )
+            raise Exception( 'has to be between 0 and %d for account %d' %(maxCharId, accountId) )
         self._setLoginData(loginName, accountId, charId, wowPath)
         wowBinary = os.path.join(wowPath, "World of Warcraft.app/Contents/MacOS/World of Warcraft")
         self.wowProcess = subprocess.Popen(wowBinary, stdout=open('/dev/null', 'w'), stderr=open('/dev/null', 'w'))
