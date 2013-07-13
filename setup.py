@@ -1,4 +1,4 @@
-from setuptools import setup, find_packages
+from setuptools import setup, find_packages, Extension
 package = "wowapi"
 try:
     verstrline = open('src/'+package+'/_version.py', "rt").read()
@@ -40,6 +40,9 @@ setup(
     },
     dependency_links = [
         "http://basement.local/python-eggs/"
+    ],
+    ext_modules=[
+        Extension('wowapi.vmregion', ['src/wowapi/vmregion.c']),
     ],
 )
 
