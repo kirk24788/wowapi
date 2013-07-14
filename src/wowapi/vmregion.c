@@ -28,6 +28,7 @@
 
 
 #include <Python.h>
+#include <math.h>
 #include <time.h>
 #include <mach/mach.h>
 #include <mach/mach_vm.h>
@@ -71,6 +72,13 @@ static int compareInt64(void* searchValue, char* buffer) {
 }
 static int compareUInt64(void* searchValue, char* buffer) {
     return *((unsigned long long*)searchValue) == *((unsigned long long*)buffer);
+}
+#define EPSILON 0.001
+static int compareFloat(void* searchValue, char* buffer) {
+    return fabs(*((float*)searchValue) - *((float*)buffer)) < EPSILON;
+}
+static int compareDouble(void* searchValue, char* buffer) {
+    return fabs(*((double*)searchValue) - *((double*)buffer)) < EPSILON;
 }
 #define ASIZE 256
 static void* bmsearch( char *pat, int m, char *text, long n ) {
@@ -201,7 +209,7 @@ static VMRegion VMNextRegionWithAttributes( pid_t pid, VMRegion previous, unsign
 }
 
 
-PyObject * search(pid_t process, void* searchValue, int(*compareFn)(void*,char*), int step) {
+PyObject * search(pid_t process, void* searchValue, int(*compareFn)(void*,char*), int dataWidth, int step) {
     VMRegion region;
     PyObject* results = PyList_New(0);
     char *ptr, *top;
@@ -227,7 +235,7 @@ PyObject * search(pid_t process, void* searchValue, int(*compareFn)(void*,char*)
         }
         
         ptr = buf;
-        top = buf + region.size;
+        top = buf + region.size - dataWidth + 1;
         offset = region.address - (mach_vm_address_t)buf;
         while ( ptr < top ) {
             if(compareFn(searchValue, ptr)) {
@@ -376,41 +384,67 @@ static PyObject *py_next_region_with_attributes(PyObject *self, PyObject *args) 
 static PyObject *py_search_int32(PyObject *self, PyObject *args) {
     int pid;
     int searchValue;
+    int align;
     
-    if (!PyArg_ParseTuple(args, "ii", &pid, &searchValue))
+    if (!PyArg_ParseTuple(args, "iii", &pid, &searchValue, &align))
         return NULL;
 
-    return search( (pid_t) pid, &searchValue, compareInt32, 4);
+    return search( (pid_t) pid, &searchValue, compareInt32, 4, align ? 4 : 1);
 }
 
 static PyObject *py_search_uint32(PyObject *self, PyObject *args) {
     int pid;
     unsigned int searchValue;
+    int align;
     
-    if (!PyArg_ParseTuple(args, "iI", &pid, &searchValue))
+    if (!PyArg_ParseTuple(args, "iIi", &pid, &searchValue, &align))
         return NULL;
 
-    return search( (pid_t) pid, &searchValue, compareUInt32, 4);
+    return search( (pid_t) pid, &searchValue, compareUInt32, 4, align ? 4 : 1);
 }
 
 static PyObject *py_search_int64(PyObject *self, PyObject *args) {
     int pid;
     long long searchValue;
+    int align;
     
-    if (!PyArg_ParseTuple(args, "iL", &pid, &searchValue))
+    if (!PyArg_ParseTuple(args, "iLi", &pid, &searchValue, &align))
         return NULL;
 
-    return search( (pid_t) pid, &searchValue, compareInt64, 8);
+    return search( (pid_t) pid, &searchValue, compareInt64, 8, align ? 4 : 1);
 }
 
 static PyObject *py_search_uint64(PyObject *self, PyObject *args) {
     int pid;
     unsigned long long searchValue;
+    int align;
     
-    if (!PyArg_ParseTuple(args, "iK", &pid, &searchValue))
+    if (!PyArg_ParseTuple(args, "iKi", &pid, &searchValue, &align))
         return NULL;
 
-    return search( (pid_t) pid, &searchValue, compareUInt64, 8);
+    return search( (pid_t) pid, &searchValue, compareUInt64, 8, align ? 4 : 1);
+}
+
+static PyObject *py_search_float(PyObject *self, PyObject *args) {
+    int pid;
+    float searchValue;
+    int align;
+    
+    if (!PyArg_ParseTuple(args, "ifi", &pid, &searchValue, &align))
+        return NULL;
+
+    return search( (pid_t) pid, &searchValue, compareFloat, 8, align ? 4 : 1);
+}
+
+static PyObject *py_search_double(PyObject *self, PyObject *args) {
+    int pid;
+    double searchValue;
+    int align;
+    
+    if (!PyArg_ParseTuple(args, "idi", &pid, &searchValue, &align))
+        return NULL;
+
+    return search( (pid_t) pid, &searchValue, compareDouble, 8, align ? 4 : 1);
 }
 
 static PyObject *py_search_string(PyObject *self, PyObject *args) {
@@ -547,6 +581,8 @@ static PyMethodDef MyMethods[] = {
     {"search_uint32",  py_search_uint32, METH_VARARGS, "Searches an unsigned 32-bit integer value"},
     {"search_int64",  py_search_int64, METH_VARARGS, "Searches an 64-bit integer value"},
     {"search_uint64",  py_search_uint64, METH_VARARGS, "Searches an unsigned 64-bit integer value"},
+    {"search_float",  py_search_float, METH_VARARGS, "Searches a float value"},
+    {"search_double",  py_search_double, METH_VARARGS, "Searches a double value"},
     {"search_string",  py_search_string, METH_VARARGS, "Searches an string value"},
     {"read_bytes",  py_read_bytes, METH_VARARGS, "Reads the number of bytes fro the given process id at the given address."},
     {"read_int32",  py_read_int32, METH_VARARGS, "Reads an 32-bit integer value from the given address."},

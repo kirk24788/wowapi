@@ -4,4 +4,4 @@ try:
 except ImportError:
     # We're running in a tree that doesn't have a _version.py, so we don't know what our version is.
     pass
-__all__ = ["battlenet","gdbhack","mach_vm","vmregion","wow","wowlogin"]
+__all__ = ["battlenet","gdbhack","mach_vm","memsearch","vmregion","wow","wowlogin"]
