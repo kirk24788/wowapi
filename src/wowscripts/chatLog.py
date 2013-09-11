@@ -44,7 +44,7 @@ def main():
     parser = argparse.ArgumentParser(description=getDescription(), formatter_class=argparse.RawTextHelpFormatter)
     parser.add_argument('pid', metavar='INSTANCE KEY', type=validateID,  help='WoW Instance Key')
     parser.add_argument('--revert', '-r', dest='revert', action='store_true', default=False, help='revert unlock?')
-    parser.add_argument('--update', '-u', default=2, metavar='UPDATE INTERVAL', help='update interval in seconds')
+    parser.add_argument('--update', '-u', default=2, type=int, metavar='UPDATE INTERVAL', help='update interval in seconds')
     args = parser.parse_args()
 
     wow = WorldOfWarcraft(args.pid)
