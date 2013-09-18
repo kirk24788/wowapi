@@ -19,7 +19,7 @@ else:
 setup(
     name = "wowapi",
     package_dir={'': 'src'},
-    packages=find_packages('src'),
+    packages= ["wowapi", "wowscripts"], #find_packages('src'),
     version = version,
     install_requires=[
         "appscript",
@@ -27,20 +27,14 @@ setup(
     ],
     entry_points={
         'console_scripts': [
-            'wow = wowscripts.wow:main [scripts]',
-            'professions = wowscripts.professions:main [scripts]',
-            'combatLog = wowscripts.combatLog:main [scripts]',
-            'chatLog = wowscripts.chatLog:main [scripts]',
-            'luaUnlock = wowscripts.luaUnlock:main [scripts]',
-            'battlenet = wowscripts.battlenet:main [scripts]',
+            'wow = wowscripts.wow:main',
+            'professions = wowscripts.professions:main',
+            'combatLog = wowscripts.combatLog:main',
+            'chatLog = wowscripts.chatLog:main',
+            'luaUnlock = wowscripts.luaUnlock:main',
+            'battlenet = wowscripts.battlenet:main',
         ]
     },
-    extras_require = {
-        'scripts':  ["mmhelper"],
-    },
-    dependency_links = [
-        "http://basement.local/python-eggs/"
-    ],
     ext_modules=[
         Extension('wowapi.vmregion', ['src/wowapi/vmregion.c']),
     ],

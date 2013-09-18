@@ -4,7 +4,7 @@
 import argparse
 import psutil
 from datetime import datetime
-
+from wowapi.helper import elevateSudo
 from wowapi.wow import WorldOfWarcraft
 
 PIDS = WorldOfWarcraft.getAllPIDs()
@@ -39,9 +39,8 @@ def main():
     parser = argparse.ArgumentParser(description=getDescription(), formatter_class=argparse.RawTextHelpFormatter)
     parser.add_argument('pid', metavar='INSTANCE KEY', type=validateID,  help='WoW Instance Key')
     parser.add_argument('--revert', '-r', dest='revert', action='store_true', default=False, help='revert unlock?')
-
     args = parser.parse_args()
-
+    elevateSudo()
     w = WorldOfWarcraft(args.pid)
     if args.revert:
         print "Locking PID: %d" % args.pid
