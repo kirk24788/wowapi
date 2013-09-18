@@ -5,10 +5,10 @@ import time
 import datetime
 import argparse
 
-from mmhelper.mmhelper import uniq
-from mmhelper.mmhelper import normalMessage
-from mmhelper.mmhelper import loadingMessage
-from mmhelper.mmhelper import BinarySearch
+from wowapi.helper import uniq
+from wowapi.helper import normalMessage
+from wowapi.helper import loadingMessage
+from wowapi.helper import BinarySearch
 
 LOG_DIR = "/Applications/World of Warcraft/Logs/"
 COMBATLOG_FILENAME = LOG_DIR + "WoWCombatLog.txt"
