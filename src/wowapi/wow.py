@@ -21,14 +21,14 @@ KEY_ESCAPE = 53
 
 MEMORY_EDITS = {
 "LUA_UNLOCK" : (
-    0x7f0362,
+    0x007ee5a2,
     [0x74],
     [0xeb],
     "JE -> JMP"
 ),
 "INTERACT_UNIT" : (
-    0x7fd950,
-    [0xc7,0x44,0x24,0x04,0x00,0x00,0x00,0x00,0xe8,0xa3,0x7b],
+    0x007fbb80,
+    [0xc7, 0x44, 0x24, 0x04, 0x00, 0x00, 0x00, 0x00, 0xe8, 0xb3, 0x7b]
     [0x50,0xb8,0x00,0x00,0x00,0x00,0x89,0x01,0x58,0xeb,0x06],
     "PUSH EAX; MOV EAX,0; POP EAX; MOV [ECX],EAX; JMP+6"
 ),
@@ -103,7 +103,7 @@ class WorldOfWarcraft:
             app(pid=self.wowPID).activate()
             app('System Events').keystroke(c)
             time.sleep(typeDelay)
-            
+
     @staticmethod
     def getAllPIDs():
         pids = []
@@ -112,7 +112,7 @@ class WorldOfWarcraft:
             if(proc.name=="World of Warcraft"):
                 pids.append(pid)
         return pids
-        
+
     def _hack(self, key, revert=False):
         address,originalData,newData,comment = MEMORY_EDITS[key]
         if revert:
