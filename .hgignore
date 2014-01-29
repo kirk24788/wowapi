@@ -1,6 +1,0 @@
-# use glob syntax.
-syntax: glob
-
-src/wowapi.egg-info/
-build/*
-dist/*
